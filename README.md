@@ -9,17 +9,6 @@ de sua identificação (ID).
 - PHP 5.3
 - MySQL 5.5
 - Docker
-## Funcionalidades
-
-### Listar Clientes
-
-- Endpoint: `http://localhost/api/clientes/lista`
-- Descrição: Retorna uma lista com todos os clientes cadastrados no sistema.
-
-### Buscar Cliente por ID
-
-- Endpoint: `http://localhost/api/clientes/buscar?id={ID}`
-- Descrição: Retorna informações detalhadas de um cliente específico com base no seu ID.
 
 ## Configuração do Ambiente com Docker
 
@@ -56,3 +45,14 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
     ```bash
     docker-compose down
    ```
+## Funcionalidades
+
+### Listar Clientes
+
+- Endpoint: `http://localhost/api/clientes/lista`
+- Descrição: Retorna uma lista com todos os clientes cadastrados no sistema.
+
+### Buscar Cliente por ID
+
+- Endpoint: `http://localhost/api/clientes/buscar?id={ID}`
+- Descrição: Retorna informações detalhadas de um cliente específico com base no seu ID.
