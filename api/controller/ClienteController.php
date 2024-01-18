@@ -3,6 +3,9 @@ global $messages, $id;
 include_once __DIR__ . "/../service/ClienteService.php";
 global $api, $method;
 
+/**
+ * Controlador principal para manipulação de clientes.
+ */
 if ($api == 'clientes') {
     $clienteController = new ClienteController();
     if ($method == "GET") {
@@ -18,8 +21,16 @@ if ($api == 'clientes') {
     exit;
 }
 
+/**
+ * Controlador para operações relacionadas a clientes.
+ */
 class ClienteController
 {
+    /**
+     * Lista todos os clientes.
+     *
+     * @return void
+     */
     public function listarClientes()
     {
         global $acao, $param;
@@ -30,6 +41,12 @@ class ClienteController
         }
     }
 
+    /**
+     * Busca um cliente pelo ID.
+     *
+     * @param string $id O ID do cliente a ser buscado.
+     * @return void
+     */
     public function buscarPorId($id)
     {
         global $acao;
@@ -39,5 +56,4 @@ class ClienteController
             exit();
         }
     }
-
 }
