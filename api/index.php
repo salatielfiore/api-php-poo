@@ -1,6 +1,7 @@
 <?php
 require_once "comons/HttpStatus.php";
 include_once "comons/Response.php";
+include_once "comons/ErroMessageResponse.php";
 
 header('Access-Control-Allow-Origin: *');
 header('Content-type: application/json');
@@ -17,16 +18,14 @@ if (isset($_GET['path'])) {
     }
 
 } else {
-    echo json_encode(Response::responseError(
-        HttpStatus::$NOT_FOUND_STATUS, $messages['error_not_found'], HttpStatus::$NOT_FOUND_VALUE));
+    ErroMessageResponse::notFoundErro('error_not_found');
     exit;
 }
 
 if (isset($path[0])) {
     $api = $path[0];
 } else {
-    echo json_encode(Response::responseError(
-        HttpStatus::$NOT_FOUND_STATUS, $messages['error_not_found'], HttpStatus::$NOT_FOUND_VALUE));
+    ErroMessageResponse::notFoundErro('error_not_found');
     exit;
 }
 if (isset($path[1])) {

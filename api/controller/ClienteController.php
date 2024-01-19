@@ -1,7 +1,9 @@
 <?php
-global $messages, $id;
+global $id, $api, $method;
 include_once __DIR__ . "/../service/ClienteService.php";
-global $api, $method;
+include_once __DIR__ . "/../model/Cliente.php";
+include_once __DIR__ . "/../utils/JsonUtils.php";
+include_once __DIR__ . "/../utils/StringUtils.php";
 
 /**
  * Controlador principal para manipulação de clientes.
@@ -13,11 +15,13 @@ if ($api == 'clientes') {
         $clienteController->buscarPorId($id);
     }
     if ($method == "POST") {
-
+        try {
+            $clienteController->salvarCliente();
+        } catch (Exception $e) {
+            ErroMessageResponse::internalServerErro();
+        }
     }
-
-    echo json_encode(Response::responseError(
-        HttpStatus::$NOT_FOUND_STATUS, $messages['error_not_found'], HttpStatus::$NOT_FOUND_VALUE));
+    ErroMessageResponse::notFoundErro('error_not_found');
     exit;
 }
 
@@ -56,4 +60,36 @@ class ClienteController
             exit();
         }
     }
+
+    /**
+     * @throws Exception
+     */
+    public function salvarCliente()
+    {
+        global $acao, $param;
+        if ($acao == "salvar" && $param == '') {
+            $clienteService = new ClienteService();
+            $cliente = $this::dadosCliente();
+            $clienteService->salvarCliente($cliente);
+        }
+
+    }
+
+    /**
+     * Obtém e valida os dados do cliente a partir do JSON da requisição POST.
+     *
+     * @return Cliente Objeto Cliente com os dados validados e formatados.
+     */
+    private function dadosCliente()
+    {
+        $data = JsonUtils::pegarDadosPostJson();
+        JsonUtils::validarDadosPostCliente($data, array('nome', 'telefone'));
+        $cliente = new Cliente();
+        $telefone = StringUtils::removeMascaraTelefone($data['telefone']);
+        $cliente->setNome($data['nome']);
+        $cliente->setTelefone($telefone);
+        return $cliente;
+    }
+
 }
+

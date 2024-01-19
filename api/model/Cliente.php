@@ -1,4 +1,9 @@
 <?php
+
+/**
+ * Classe representando um Cliente.
+ * @author Salatiel Fiore
+ */
 class Cliente
 {
 

@@ -9,6 +9,7 @@ class ClienteDAO
 {
     const SELECT_ALL_CLIENTES = "SELECT * FROM clientes ORDER BY nome";
     const SELECT_CLIENTE_BY_ID = "SELECT * FROM clientes WHERE id = :id";
+    const SAVE_CLIENTE = "INSERT INTO clientes (nome, telefone) VALUES (:nome, :telefone)";
 
     /**
      * Lista todos os clientes no banco de dados.
@@ -49,6 +50,32 @@ class ClienteDAO
             $cliente = $rs->fetchObject();
             // Use a variável $cliente no retorno
             return $cliente ?: null;
+        } catch (Exception $e) {
+            throw new Exception($messages['error_server'] . $e->getMessage());
+        }
+    }
+
+    /**
+     * Salva um novo cliente no banco de dados.
+     *
+     * @param Cliente $cliente Os dados do cliente a serem salvos.
+     * @return void
+     * @throws Exception Lançada em caso de erro durante a operação.
+     */
+    public function salvarCliente(Cliente $cliente)
+    {
+        global $messages;
+        try {
+            $db = DB::connect();
+
+            $stmt = $db->prepare(self::SAVE_CLIENTE);
+
+            $nome = $cliente->getNome();
+            $telefone = $cliente->getTelefone();
+            $stmt->bindParam(':nome', $nome);
+            $stmt->bindParam(':telefone', $telefone);
+
+            $stmt->execute();
         } catch (Exception $e) {
             throw new Exception($messages['error_server'] . $e->getMessage());
         }
