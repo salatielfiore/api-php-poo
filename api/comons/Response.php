@@ -2,6 +2,7 @@
 
 /**
  * Classe Response para manipulação de respostas HTTP formatadas.
+ * @author Salatiel Fiore
  */
 class response
 {

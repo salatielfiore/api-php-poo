@@ -9,8 +9,10 @@ class ClienteDAO
 {
     const SELECT_ALL_CLIENTES = "SELECT * FROM clientes ORDER BY nome";
     const SELECT_CLIENTE_BY_ID = "SELECT * FROM clientes WHERE id = :id";
+    const SELECT_EXISTS_CLIENTE_BY_ID = "SELECT COUNT(*) FROM clientes WHERE id = :id";
     const SAVE_CLIENTE = "INSERT INTO clientes (nome, telefone) VALUES (:nome, :telefone)";
     const UPDATE_CLIENTE = "UPDATE clientes SET nome = :nome, telefone = :telefone WHERE id = :id";
+    const DELETE_CLIENTE = "DELETE FROM clientes WHERE id = :id";
 
     /**
      * Lista todos os clientes no banco de dados.
@@ -89,6 +91,7 @@ class ClienteDAO
      */
     public function atualizarCliente(Cliente $cliente)
     {
+        global $messages;
         try {
             $db = Db::connect();
             // Remove a máscara do número de telefone
@@ -107,8 +110,50 @@ class ClienteDAO
             // Executa a query
             $rs->execute();
         } catch (Exception $e) {
-            throw new Exception("Erro ao atualizar cliente: " . $e->getMessage());
+            throw new Exception($messages['error_server'] . $e->getMessage());
         }
     }
 
+    /**
+     * Exclui um cliente do banco de dados com base no ID.
+     *
+     * @param int $id ID do cliente a ser excluído.
+     * @return void
+     * @throws Exception Em caso de erro na exclusão.
+     */
+    public function excluirCliente($id)
+    {
+        global $messages;
+        try {
+            $db = Db::connect();
+            $rs = $db->prepare(self::DELETE_CLIENTE);
+            $rs->bindParam(':id', $id, PDO::PARAM_INT);
+            $rs->execute();
+        } catch (Exception $e) {
+            // Adicione log ou mensagem informativa aqui
+            throw new Exception($messages['error_server'] . $e->getMessage());
+        }
+    }
+
+    /**
+     * Verifica se um cliente com o ID fornecido existe no banco de dados.
+     *
+     * @param int $id ID do cliente a ser verificado.
+     * @return bool Retorna true se o cliente existe, caso contrário, false.
+     * @throws Exception Em caso de erro na verificação.
+     */
+    public function existsById($id)
+    {
+        global $messages;
+        try {
+            $db = Db::connect();
+            $rs = $db->prepare(self::SELECT_EXISTS_CLIENTE_BY_ID);
+            $rs->bindParam(':id', $id, PDO::PARAM_INT);
+            $rs->execute();
+            $count = $rs->fetchColumn();
+            return $count > 0;
+        } catch (Exception $e) {
+            throw new Exception($messages['error_server'] . $e->getMessage());
+        }
+    }
 }

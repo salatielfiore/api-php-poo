@@ -45,6 +45,7 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
     ```bash
     docker-compose down
    ```
+
 ## Funcionalidades
 
 ### Listar Clientes
@@ -84,3 +85,12 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
    }
   ```
 - Descrição: Altera o cliente na base de dados.
+
+### Excluir Cliente
+
+- method: DELETE
+- Endpoint: `http://localhost/api/clientes/excluir/{ID}`
+- Descrição: Exclui o cliente da base de dados.
+-
+
+Lembre-se de substituir {ID} nos endpoints pelos IDs reais dos clientes que você deseja buscar, alterar ou excluir.

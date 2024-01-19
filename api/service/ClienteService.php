@@ -30,15 +30,14 @@ class ClienteService
      * Busca um cliente pelo ID.
      *
      * @param int|string $id O ID do cliente a ser buscado.
-     * @return void
+     * @return object
      */
     public function buscarPorId($id)
     {
         try {
             $this->validarId($id);
             $clienteDao = new ClienteDAO();
-            $obj = $clienteDao->buscarClientePorId($id);
-            echo json_encode(Response::responseData(HttpStatus::OK_STATUS, null, $obj));
+            return $clienteDao->buscarClientePorId($id);
         } catch (Exception $e) {
             ErroMessageResponse::internalServerErro();
             exit();
@@ -79,6 +78,7 @@ class ClienteService
         global $messages;
         try {
             $this::validarId($cliente->getId());
+            $this::verificarSeExisteClientePorId($cliente->getId());
             $this::validarCliente($cliente);
             $clienteDao = new ClienteDAO();
             $clienteDao->atualizarCliente($cliente);
@@ -87,6 +87,29 @@ class ClienteService
             exit();
         } catch (Exception $e) {
             ErroMessageResponse::badRequestErro('error_save_client');
+            exit();
+        }
+    }
+
+    /**
+     * Exclui um cliente existente.
+     *
+     * @param int $id ID do cliente a ser excluído.
+     * @return void
+     */
+    public function excluirCliente($id)
+    {
+        global $messages;
+        try {
+            $this::validarId($id);
+            $this::verificarSeExisteClientePorId($id);
+            $clienteDao = new ClienteDAO();
+            $clienteDao->excluirCliente($id);
+            echo json_encode(Response::responseData(
+                HttpStatus::OK_STATUS, $messages['success_delete_cliente'], null));
+            exit();
+        } catch (Exception $e) {
+            ErroMessageResponse::badRequestErro('error_delete_cliente');
             exit();
         }
     }
@@ -128,10 +151,26 @@ class ClienteService
      * @param mixed $id ID a ser validado.
      * @return void
      */
-    public function validarId($id)
+    private function validarId($id)
     {
         if (!is_numeric($id)) {
             ErroMessageResponse::badRequestErro('error_invalid_id');
+            exit();
+        }
+    }
+
+    /**
+     * Verifica se um cliente com o ID fornecido existe antes de editar.
+     *
+     * @param int $id ID do cliente a ser verificado.
+     * @return void
+     * @throws Exception Em caso de cliente não existir.
+     */
+    private function verificarSeExisteClientePorId($id)
+    {
+        $clienteDao = new ClienteDAO();
+        if (!$clienteDao->existsById($id)) {
+            ErroMessageResponse::notFoundErro('error_buscar_cliente');
             exit();
         }
     }

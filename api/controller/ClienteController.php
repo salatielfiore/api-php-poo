@@ -26,6 +26,10 @@ if ($api == 'clientes') {
         $clienteController->atualizarCliente();
     }
 
+    if ($method == "DELETE") {
+        $clienteController->excluirCliente();
+    }
+
     ErroMessageResponse::notFoundErro('error_not_found');
     exit;
 }
@@ -61,7 +65,8 @@ class ClienteController
         global $acao;
         if ($acao == 'buscar' && $id != '') {
             $clienteService = new ClienteService();
-            $clienteService->buscarPorId($id);
+            $obj = $clienteService->buscarPorId($id);
+            echo json_encode(Response::responseData(HttpStatus::OK_STATUS, null, $obj));
             exit();
         }
     }
@@ -96,6 +101,15 @@ class ClienteController
             $cliente = $this::obterDadosCliente();
             $cliente->setId($param);
             $clienteService->editarCliente($cliente);
+        }
+    }
+
+    public function excluirCliente()
+    {
+        global $acao, $param;
+        if ($acao == "excluir" && $param != '') {
+            $clienteService = new ClienteService();
+            $clienteService->excluirCliente($param);
         }
     }
 
