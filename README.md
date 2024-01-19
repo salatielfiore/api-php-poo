@@ -49,10 +49,38 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
 
 ### Listar Clientes
 
+- method: GET
 - Endpoint: `http://localhost/api/clientes/lista`
 - Descrição: Retorna uma lista com todos os clientes cadastrados no sistema.
 
 ### Buscar Cliente por ID
 
+- method: GET
 - Endpoint: `http://localhost/api/clientes/buscar?id={ID}`
 - Descrição: Retorna informações detalhadas de um cliente específico com base no seu ID.
+
+### Salvar Cliente
+
+- method: POST
+- Endpoint: `http://localhost/api/clientes/salvar`
+- Dados JSON de Exemplo
+   ```json
+   {
+     "nome": "Nome do Cliente",
+     "telefone": "1234567890"
+   }
+  ```
+- Descrição: Salva o cliente na base de dados.
+
+### Alterar Cliente
+
+- method: PUT
+- Endpoint: `http://localhost/api/clientes/editar/{ID}`
+- Dados JSON de Exemplo
+   ```json
+   {
+     "nome": "Nome do Cliente",
+     "telefone": "1234567890"
+   }
+  ```
+- Descrição: Altera o cliente na base de dados.
