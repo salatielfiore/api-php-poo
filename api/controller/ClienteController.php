@@ -21,6 +21,11 @@ if ($api == 'clientes') {
             ErroMessageResponse::internalServerErro();
         }
     }
+
+    if ($method == "PUT") {
+        $clienteController->atualizarCliente();
+    }
+
     ErroMessageResponse::notFoundErro('error_not_found');
     exit;
 }
@@ -62,6 +67,9 @@ class ClienteController
     }
 
     /**
+     * Salva um novo cliente, obtendo os dados do cliente a partir da requisição.
+     *
+     * @return void
      * @throws Exception
      */
     public function salvarCliente()
@@ -69,10 +77,26 @@ class ClienteController
         global $acao, $param;
         if ($acao == "salvar" && $param == '') {
             $clienteService = new ClienteService();
-            $cliente = $this::dadosCliente();
+            $cliente = $this::obterDadosCliente();
             $clienteService->salvarCliente($cliente);
         }
 
+    }
+
+    /**
+     * Atualiza um cliente existente, obtendo os dados do cliente a partir da requisição.
+     *
+     * @return void
+     */
+    public function atualizarCliente()
+    {
+        global $acao, $param;
+        if ($acao == "editar" && $param != '') {
+            $clienteService = new ClienteService();
+            $cliente = $this::obterDadosCliente();
+            $cliente->setId($param);
+            $clienteService->editarCliente($cliente);
+        }
     }
 
     /**
@@ -80,7 +104,7 @@ class ClienteController
      *
      * @return Cliente Objeto Cliente com os dados validados e formatados.
      */
-    private function dadosCliente()
+    private function obterDadosCliente()
     {
         $data = JsonUtils::pegarDadosPostJson();
         JsonUtils::validarDadosPostCliente($data, array('nome', 'telefone'));

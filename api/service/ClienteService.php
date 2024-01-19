@@ -35,10 +35,7 @@ class ClienteService
     public function buscarPorId($id)
     {
         try {
-            if (!is_numeric($id)) {
-                ErroMessageResponse::badRequestErro('error_invalid_id');
-                exit();
-            }
+            $this->validarId($id);
             $clienteDao = new ClienteDAO();
             $obj = $clienteDao->buscarClientePorId($id);
             echo json_encode(Response::responseData(HttpStatus::OK_STATUS, null, $obj));
@@ -62,6 +59,29 @@ class ClienteService
             $this::validarCliente($cliente);
             $clienteDao = new ClienteDAO();
             $clienteDao->salvarCliente($cliente);
+            echo json_encode(Response::responseData(
+                HttpStatus::OK_STATUS, $messages['success_save_cliente'], null));
+            exit();
+        } catch (Exception $e) {
+            ErroMessageResponse::badRequestErro('error_save_client');
+            exit();
+        }
+    }
+
+    /**
+     * Edita um cliente existente.
+     *
+     * @param Cliente $cliente Objeto Cliente contendo os novos dados.
+     * @return void
+     */
+    public function editarCliente(Cliente $cliente)
+    {
+        global $messages;
+        try {
+            $this::validarId($cliente->getId());
+            $this::validarCliente($cliente);
+            $clienteDao = new ClienteDAO();
+            $clienteDao->atualizarCliente($cliente);
             echo json_encode(Response::responseData(
                 HttpStatus::OK_STATUS, $messages['success_save_cliente'], null));
             exit();
@@ -98,6 +118,20 @@ class ClienteService
 
         if (strlen($telefone) !== 11) {
             ErroMessageResponse::badRequestErro('error_campo_telefone_tamanho');
+            exit();
+        }
+    }
+
+    /**
+     * Valida se o ID é numérico.
+     *
+     * @param mixed $id ID a ser validado.
+     * @return void
+     */
+    public function validarId($id)
+    {
+        if (!is_numeric($id)) {
+            ErroMessageResponse::badRequestErro('error_invalid_id');
             exit();
         }
     }
