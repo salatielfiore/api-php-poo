@@ -86,7 +86,7 @@ class ClienteService
             exit();
         }
 
-        if (count($nome) > 50) {
+        if (strlen($nome) > 50) {
             ErroMessageResponse::badRequestErro('error_campo_nome_tamanho');
             exit();
         }
