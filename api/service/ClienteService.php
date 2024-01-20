@@ -21,7 +21,7 @@ class ClienteService
             echo json_encode(Response::responseData(HttpStatus::OK_STATUS, null, $obj));
             exit();
         } catch (Exception $e) {
-            ErroMessageResponse::notFoundErro('error_not_found');
+            ErroMessageResponse::internalServerErro();
             exit();
         }
     }

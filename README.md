@@ -39,6 +39,32 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
     ENGINE=InnoDB
     DEFAULT CHARSET=latin1
     COLLATE=latin1_swedish_ci;
+   
+    CREATE TABLE api.usuario (
+        id BIGINT auto_increment NOT NULL,
+        nome varchar(100) NULL,
+        email varchar(100) NULL,
+        ativo BOOL NULL,
+        senha varchar(100) NULL,
+        CONSTRAINT usuario_PK PRIMARY KEY (id)
+    )
+    ENGINE=InnoDB
+    DEFAULT CHARSET=latin1
+    COLLATE=latin1_swedish_ci;
+   
+    CREATE TABLE api.usuario_token (
+        id BIGINT auto_increment NOT NULL,
+        token varchar(255) NOT NULL,
+        generatedAt DATETIME NOT NULL,
+        ativo BOOL NOT NULL,
+        expires_in INT NOT NULL,
+        id_usuario BIGINT NOT NULL,
+        CONSTRAINT usuario_token_PK PRIMARY KEY (id),
+        CONSTRAINT usuario_token_FK FOREIGN KEY (id_usuario) REFERENCES api.usuario(id)
+    )
+    ENGINE=InnoDB
+    DEFAULT CHARSET=latin1
+    COLLATE=latin1_swedish_ci;
    ```
 5. A aplicação estará disponível em http://localhost/api/.
 6. Parando os Serviços Docker

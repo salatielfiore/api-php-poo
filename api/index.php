@@ -39,5 +39,10 @@ if (isset($path[2])) {
     $param = '';
 }
 
+$GLOBALS['secretJWT'] = '123456';
+
 $method = $_SERVER['REQUEST_METHOD'];
+
 include_once "controller/ClienteController.php";
+include_once "controller/LoginController.php";
+

@@ -17,8 +17,12 @@ return array(
     'error_campo_nome_tamanho' => 'O tamanho do campo nome e de 50 caracteres.',
     'error_campo_telefone_vazio' => 'O campo telefone não pode ser vazio.',
     'error_campo_telefone_tamanho' => 'Telefone inválido.',
+    'error_campo_email_vazio' => 'O campo email não pode ser vazio.',
+    'error_campo_senha_vazio' => 'O campo senha não pode ser vazio.',
     'error_delete_cliente' => 'Ocorreu um erro ao excluir o cliente.',
     'error_buscar_cliente' => 'O Id do cliente informado não existe.',
+    'error_credencial_invalida' => 'O email ou senha está inválido.',
+    'error_usuario_inativo' => 'O Usuário está inativo.',
     // messagem de sucesso
     'success_save_cliente' => 'Cliente salvo com sucesso.',
     'success_delete_cliente' => 'Cliente Excluido com sucesso.'

@@ -45,4 +45,11 @@ class ErroMessageResponse
             HttpStatus::INTERNAL_SERVER_ERROR_STATUS, $messages['error_server'], HttpStatus::INTERNAL_SERVER_ERROR_VALUE));
     }
 
+    public static function unauthorizedErro($chave_mensagem)
+    {
+        global $messages;
+        echo json_encode(Response::responseError(
+            HttpStatus::UNAUTHORIZED_STATUS, $messages[$chave_mensagem], HttpStatus::UNAUTHORIZED_VALUE));
+    }
+
 }

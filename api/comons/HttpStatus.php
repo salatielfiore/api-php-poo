@@ -8,6 +8,8 @@ class HttpStatus
     const OK_STATUS = 200;
     const BAD_REQUEST_VALUE = "Bad Request";
     const BAD_REQUEST_STATUS = 400;
+    const UNAUTHORIZED_STATUS = 401;
+    const UNAUTHORIZED_VALUE = "Unauthorized";
     const NOT_FOUND_VALUE = "Not Found";
     const NOT_FOUND_STATUS = 404;
     const INTERNAL_SERVER_ERROR_VALUE = "Internal Server Error";
