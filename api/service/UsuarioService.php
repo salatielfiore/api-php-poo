@@ -81,12 +81,12 @@ class UsuarioService
      */
     public function getTokenUser(Usuario $usuario, $expireIn)
     {
+        global $config;
         return JWT::encode(array(
             'id' => $usuario->getId(),
             'name' => $usuario->getNome(),
             'email' => $usuario->getEmail(),
             'expireIn' => $expireIn,
-        ), $GLOBALS['secretJWT']);
+        ), $config['secretJWT']);
     }
-
 }

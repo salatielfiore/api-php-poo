@@ -14,11 +14,12 @@ class Db
      */
     public static function connect()
     {
+        global $config;
         try {
-            $host = 'database-api';
-            $user = 'root';
-            $password = 'root';
-            $banco = 'api';
+            $host = $config['dbHost'];
+            $user = $config['dbUser'];
+            $password = $config['dbPassword'];
+            $banco = $config['dbName'];
             return new PDO("mysql:host=$host;dbname=$banco;charset=UTF8;", $user, $password);
         } catch (PDOException $e) {
             throw new PDOException($e);

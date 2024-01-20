@@ -19,11 +19,9 @@ class UsuarioDao
             $usuarioData = $rs->fetchObject();
             $usuario = new Usuario();
             $usuario->preencherDados($usuarioData);
-            return $usuarioData ? $usuario : new Usuario();
+            return $usuario;
         } catch (Exception $e) {
             throw new Exception($messages['error_server'] . $e->getMessage());
         }
     }
-
-
 }

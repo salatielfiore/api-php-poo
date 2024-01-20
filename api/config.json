@@ -1,0 +1,7 @@
+{
+  "dbHost": "database-api",
+  "dbUser": "root",
+  "dbPassword": "root",
+  "dbName": "api",
+  "secretJWT": "123456"
+}

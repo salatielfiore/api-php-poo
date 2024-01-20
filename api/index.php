@@ -8,7 +8,6 @@ header('Content-type: application/json');
 
 date_default_timezone_set("America/Sao_Paulo");
 
-$messages = include 'comons/messages.php';
 
 if (isset($_GET['path'])) {
     $path = explode("/", $_GET['path']);
@@ -39,8 +38,8 @@ if (isset($path[2])) {
     $param = '';
 }
 
-$GLOBALS['secretJWT'] = '123456';
-
+$messages = json_decode(file_get_contents('messages.json'), true);
+$config = json_decode(file_get_contents('config.json'), true);
 $method = $_SERVER['REQUEST_METHOD'];
 
 include_once "controller/ClienteController.php";
