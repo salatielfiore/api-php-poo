@@ -2,10 +2,10 @@
 include_once __DIR__ . "/../db/Db.php";
 
 /**
- * Classe ClienteDAO para manipulação de dados relacionados a clientes no banco de dados.
+ * Classe ClienteDao para manipulação de dados relacionados a clientes no banco de dados.
  * @author Salatiel Fiore
  */
-class ClienteDAO
+class ClienteDao
 {
     const SELECT_ALL_CLIENTES = "SELECT * FROM clientes ORDER BY nome";
     const SELECT_CLIENTE_BY_ID = "SELECT * FROM clientes WHERE id = :id";

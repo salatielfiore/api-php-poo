@@ -1,6 +1,8 @@
 <?php
 include_once __DIR__ . "/../dao/UsuarioDao.php";
 include_once __DIR__ . "/../dao/TokenDao.php";
+include_once __DIR__ . "/../model/Token.php";
+include_once __DIR__ . "/../../biblioteca/jwt/jwt.php";
 include_once __DIR__ . "/../../biblioteca/password_compact/password.php";
 
 class UsuarioService
@@ -36,6 +38,68 @@ class UsuarioService
         }
 
     }
+
+    public function validarJWT()
+    {
+        try {
+            $headers = apache_request_headers();
+            if (!isset($headers['Authorization'])) {
+                ErroMessageResponse::forbiddenErro();
+                exit();
+            }
+            $dataHeaderAuthorization = explode(" ", $headers['Authorization']);
+            $this::validarHeaderAuthorization($dataHeaderAuthorization);
+            $jwtToken = $dataHeaderAuthorization[1];
+            $tokenDao = new TokenDao();
+            $tokenUsuario = $tokenDao->buscarToken($jwtToken);
+            $this::validarToken($tokenUsuario);
+        } catch (Exception $e) {
+            ErroMessageResponse::forbiddenErro();
+            exit();
+        }
+
+    }
+
+    private static function validarToken(Token $tokenUsuario)
+    {
+        global $config;
+        $secretJWT = $config['secretJWT'];
+        $decodedJWT = JWT::decode($tokenUsuario->getToken(), $secretJWT);
+        if (!$decodedJWT->id == $tokenUsuario->getIdUsuario()) {
+            ErroMessageResponse::forbiddenErro();
+            exit();
+        }
+        if ($tokenUsuario->getId() === null) {
+            ErroMessageResponse::forbiddenErro();
+            exit();
+        }
+
+        if ($tokenUsuario->getExpiresIn() < time()) {
+            ErroMessageResponse::forbiddenErro();
+            exit();
+        }
+
+        if (!$tokenUsuario->getAtivo()) {
+            ErroMessageResponse::forbiddenErro();
+            exit();
+        }
+    }
+
+
+    private static function validarHeaderAuthorization(array $dataHeaderAuthorization)
+    {
+        if (empty($dataHeaderAuthorization[0]) || empty($dataHeaderAuthorization[1])) {
+            ErroMessageResponse::forbiddenErro();
+            exit();
+        }
+
+        if ($dataHeaderAuthorization[0] !== "Bearer") {
+            ErroMessageResponse::forbiddenErro();
+            exit();
+        }
+
+    }
+
 
     private function validarDadosLogin($email, $senha, Usuario $usuario)
     {

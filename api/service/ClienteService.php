@@ -1,5 +1,5 @@
 <?php
-include_once __DIR__ . "/../dao/ClienteDAO.php";
+include_once __DIR__ . "/../dao/ClienteDao.php";
 
 /**
  * Classe ClienteService para fornecer serviços relacionados a clientes.
@@ -16,7 +16,7 @@ class ClienteService
     public function listarClientes()
     {
         try {
-            $clienteDao = new ClienteDAO();
+            $clienteDao = new ClienteDao();
             $obj = $clienteDao->listarClientes();
             echo json_encode(Response::responseData(HttpStatus::OK_STATUS, null, $obj));
             exit();
@@ -36,7 +36,7 @@ class ClienteService
     {
         try {
             $this->validarId($id);
-            $clienteDao = new ClienteDAO();
+            $clienteDao = new ClienteDao();
             return $clienteDao->buscarClientePorId($id);
         } catch (Exception $e) {
             ErroMessageResponse::internalServerErro();
@@ -56,7 +56,7 @@ class ClienteService
         global $messages;
         try {
             $this::validarCliente($cliente);
-            $clienteDao = new ClienteDAO();
+            $clienteDao = new ClienteDao();
             $clienteDao->salvarCliente($cliente);
             echo json_encode(Response::responseData(
                 HttpStatus::OK_STATUS, $messages['success_save_cliente'], null));
@@ -80,7 +80,7 @@ class ClienteService
             $this::validarId($cliente->getId());
             $this::verificarSeExisteClientePorId($cliente->getId());
             $this::validarCliente($cliente);
-            $clienteDao = new ClienteDAO();
+            $clienteDao = new ClienteDao();
             $clienteDao->atualizarCliente($cliente);
             echo json_encode(Response::responseData(
                 HttpStatus::OK_STATUS, $messages['success_save_cliente'], null));
@@ -103,7 +103,7 @@ class ClienteService
         try {
             $this::validarId($id);
             $this::verificarSeExisteClientePorId($id);
-            $clienteDao = new ClienteDAO();
+            $clienteDao = new ClienteDao();
             $clienteDao->excluirCliente($id);
             echo json_encode(Response::responseData(
                 HttpStatus::OK_STATUS, $messages['success_delete_cliente'], null));
@@ -168,7 +168,7 @@ class ClienteService
      */
     private function verificarSeExisteClientePorId($id)
     {
-        $clienteDao = new ClienteDAO();
+        $clienteDao = new ClienteDao();
         if (!$clienteDao->existsById($id)) {
             ErroMessageResponse::notFoundErro('error_buscar_cliente');
             exit();

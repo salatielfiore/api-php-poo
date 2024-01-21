@@ -1,6 +1,7 @@
 <?php
 global $id, $api, $method;
 include_once __DIR__ . "/../service/ClienteService.php";
+include_once __DIR__ . "/../service/UsuarioService.php";
 include_once __DIR__ . "/../model/Cliente.php";
 include_once __DIR__ . "/../utils/JsonUtils.php";
 include_once __DIR__ . "/../utils/StringUtils.php";
@@ -9,6 +10,8 @@ include_once __DIR__ . "/../utils/StringUtils.php";
  * Controlador principal para manipulação de clientes.
  */
 if ($api == 'clientes') {
+    $usuarioService = new UsuarioService();
+    $usuarioService->validarJWT();
     $clienteController = new ClienteController();
     if ($method == "GET") {
         $clienteController->listarClientes();

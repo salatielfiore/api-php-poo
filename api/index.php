@@ -22,7 +22,13 @@ if (isset($_GET['path'])) {
 }
 
 if (isset($path[0])) {
+    $apis = array('clientes', 'autenticar');
     $api = $path[0];
+    // Verificar se $api está em $apis
+    if (!in_array($api, $apis)) {
+        ErroMessageResponse::notFoundErro('error_not_found');
+        exit;
+    }
 } else {
     ErroMessageResponse::notFoundErro('error_not_found');
     exit;

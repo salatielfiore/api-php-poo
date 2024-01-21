@@ -6,6 +6,7 @@ class TokenDao
     const SAVE_TOKEN_USER = "INSERT INTO usuario_token (token, generatedAt, ativo, expires_in, id_usuario) 
             VALUES (:token, :generatedAt, :ativo, :expiresIn, :idUsuario)";
     const DESTIVAR_TOKEN_USUARIO = "UPDATE usuario_token SET ativo = false WHERE id_usuario = :idUsuario";
+    const SELECT_TOKEN = "select * from usuario_token WHERE token = :token AND ativo = true";
 
     /**
      * @throws Exception
@@ -51,5 +52,23 @@ class TokenDao
         }
     }
 
-
+    /**
+     * @throws Exception
+     */
+    public function buscarToken($token)
+    {
+        global $messages;
+        try {
+            $db = DB::connect();
+            $rs = $db->prepare(self::SELECT_TOKEN);
+            $rs->bindParam(':token', $token);
+            $rs->execute();
+            $tokenUsuarioData = $rs->fetchObject();
+            $tokenUsuario = new Token();
+            $tokenUsuario->preencherDados($tokenUsuarioData);
+            return $tokenUsuario;
+        } catch (Exception $e) {
+            throw new Exception($messages['error_server'] . $e->getMessage());
+        }
+    }
 }

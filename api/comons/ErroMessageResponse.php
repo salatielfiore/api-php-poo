@@ -52,4 +52,11 @@ class ErroMessageResponse
             HttpStatus::UNAUTHORIZED_STATUS, $messages[$chave_mensagem], HttpStatus::UNAUTHORIZED_VALUE));
     }
 
+    public static function forbiddenErro()
+    {
+        $status = HttpStatus::FORBIDDEN_STATUS;
+        $error = HttpStatus::FORBIDDEN_VALUE;
+        header("HTTP/1.1 $status $error");
+    }
+
 }
