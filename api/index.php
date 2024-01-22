@@ -2,52 +2,26 @@
 require_once "comons/HttpStatus.php";
 include_once "comons/Response.php";
 include_once "comons/ErroMessageResponse.php";
+include_once "comons/Rotas.php";
 
 header('Access-Control-Allow-Origin: *');
 header('Content-type: application/json');
 
 date_default_timezone_set("America/Sao_Paulo");
 
-
-if (isset($_GET['path'])) {
-    $path = explode("/", $_GET['path']);
-
-    if (isset($_GET['id'])) {
-        $id = $_GET['id'];
-    }
-
-} else {
-    ErroMessageResponse::notFoundErro('error_not_found');
-    exit;
-}
-
-if (isset($path[0])) {
-    $apis = array('clientes', 'autenticar');
-    $api = $path[0];
-    // Verificar se $api está em $apis
-    if (!in_array($api, $apis)) {
-        ErroMessageResponse::notFoundErro('error_not_found');
-        exit;
-    }
-} else {
-    ErroMessageResponse::notFoundErro('error_not_found');
-    exit;
-}
-if (isset($path[1])) {
-    $acao = $path[1];
-} else {
-    $acao = '';
-}
-if (isset($path[2])) {
-    $param = $path[2];
-} else {
-    $param = '';
-}
-
 $messages = json_decode(file_get_contents('messages.json'), true);
 $config = json_decode(file_get_contents('config.json'), true);
-$method = $_SERVER['REQUEST_METHOD'];
 
 include_once "controller/ClienteController.php";
 include_once "controller/LoginController.php";
+
+$rotas = new Rotas();
+$rotas->add("POST", "/autenticar/login", "LoginController::login", null, false);
+$rotas->add("GET", "/clientes/lista", "ClienteController::listarClientes", null, true);
+$rotas->add("GET", "/clientes/buscar", "ClienteController::buscarPorId", array("id"), true);
+$rotas->add("POST", "/clientes/salvar", "ClienteController::salvarCliente", null, true);
+$rotas->add("PUT", "/clientes/editar/{param}", "ClienteController::atualizarCliente", null, true);
+$rotas->add("DELETE", "/clientes/excluir/{param}", "ClienteController::excluirCliente", null, true);
+
+$rotas->ir($_GET['path']);
 

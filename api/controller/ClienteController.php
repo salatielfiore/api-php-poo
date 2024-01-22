@@ -7,38 +7,8 @@ include_once __DIR__ . "/../utils/JsonUtils.php";
 include_once __DIR__ . "/../utils/StringUtils.php";
 
 /**
- * Controlador principal para manipulação de clientes.
- */
-if ($api == 'clientes') {
-    $usuarioService = new UsuarioService();
-    $usuarioService->validarJWT();
-    $clienteController = new ClienteController();
-    if ($method == "GET") {
-        $clienteController->listarClientes();
-        $clienteController->buscarPorId($id);
-    }
-    if ($method == "POST") {
-        try {
-            $clienteController->salvarCliente();
-        } catch (Exception $e) {
-            ErroMessageResponse::internalServerErro();
-        }
-    }
-
-    if ($method == "PUT") {
-        $clienteController->atualizarCliente();
-    }
-
-    if ($method == "DELETE") {
-        $clienteController->excluirCliente();
-    }
-
-    ErroMessageResponse::notFoundErro('error_not_found');
-    exit;
-}
-
-/**
  * Controlador para operações relacionadas a clientes.
+ * @author Salatiel Fiore
  */
 class ClienteController
 {
@@ -49,29 +19,24 @@ class ClienteController
      */
     public function listarClientes()
     {
-        global $acao, $param;
-        if ($acao == 'lista' && $param == '') {
-            $clienteService = new ClienteService();
-            $clienteService->listarClientes();
-            exit();
-        }
+        $clienteService = new ClienteService();
+        $clienteService->listarClientes();
+        exit();
     }
 
     /**
      * Busca um cliente pelo ID.
      *
-     * @param string $id O ID do cliente a ser buscado.
+     * @param array $params paramentros que vem na url do usuario.
      * @return void
      */
-    public function buscarPorId($id)
+    public function buscarPorId($params)
     {
-        global $acao;
-        if ($acao == 'buscar' && $id != '') {
-            $clienteService = new ClienteService();
-            $obj = $clienteService->buscarPorId($id);
-            echo json_encode(Response::responseData(HttpStatus::OK_STATUS, null, $obj));
-            exit();
-        }
+        $id = $params["id"];
+        $clienteService = new ClienteService();
+        $obj = $clienteService->buscarPorId($id);
+        echo json_encode(Response::responseData(HttpStatus::OK_STATUS, null, $obj));
+        exit();
     }
 
     /**
@@ -82,13 +47,9 @@ class ClienteController
      */
     public function salvarCliente()
     {
-        global $acao, $param;
-        if ($acao == "salvar" && $param == '') {
-            $clienteService = new ClienteService();
-            $cliente = $this::obterDadosCliente();
-            $clienteService->salvarCliente($cliente);
-        }
-
+        $clienteService = new ClienteService();
+        $cliente = $this::obterDadosCliente();
+        $clienteService->salvarCliente($cliente);
     }
 
     /**
@@ -96,24 +57,19 @@ class ClienteController
      *
      * @return void
      */
-    public function atualizarCliente()
+    public function atualizarCliente($params)
     {
-        global $acao, $param;
-        if ($acao == "editar" && $param != '') {
-            $clienteService = new ClienteService();
-            $cliente = $this::obterDadosCliente();
-            $cliente->setId($param);
-            $clienteService->editarCliente($cliente);
-        }
+        $clienteService = new ClienteService();
+        $cliente = $this::obterDadosCliente();
+        $cliente->setId($params["pathVariable"]);
+        $clienteService->editarCliente($cliente);
     }
 
-    public function excluirCliente()
+    public function excluirCliente($params)
     {
-        global $acao, $param;
-        if ($acao == "excluir" && $param != '') {
-            $clienteService = new ClienteService();
-            $clienteService->excluirCliente($param);
-        }
+        $id = $params["pathVariable"];
+        $clienteService = new ClienteService();
+        $clienteService->excluirCliente($id);
     }
 
     /**
