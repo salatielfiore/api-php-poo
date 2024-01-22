@@ -5,11 +5,19 @@ include_once __DIR__ . "/../model/Token.php";
 include_once __DIR__ . "/../../biblioteca/jwt/jwt.php";
 include_once __DIR__ . "/../../biblioteca/password_compact/password.php";
 
+/**
+ * Serviço para autenticação e geração de tokens de usuário.
+ * @author Salatiel Fiore
+ */
 class UsuarioService
 {
 
     /**
-     * @throws Exception
+     * Realiza o processo de login, autenticação e geração de token.
+     *
+     * @param string $email Endereço de e-mail do usuário.
+     * @param string $senha Senha do usuário.
+     * @throws Exception Se ocorrer um erro durante o processo.
      */
     public function login($email, $senha)
     {
@@ -39,6 +47,11 @@ class UsuarioService
 
     }
 
+    /**
+     * Valida o token JWT enviado nas requisições.
+     *
+     * @throws Exception Se ocorrer um erro durante a validação.
+     */
     public function validarJWT()
     {
         try {
@@ -60,6 +73,12 @@ class UsuarioService
 
     }
 
+    /**
+     * Valida o token JWT obtido do banco de dados.
+     *
+     * @param Token $tokenUsuario Objeto Token contendo as informações do token.
+     * @throws Exception Se ocorrer um erro durante a validação.
+     */
     private static function validarToken(Token $tokenUsuario)
     {
         global $config;
@@ -85,7 +104,12 @@ class UsuarioService
         }
     }
 
-
+    /**
+     * Valida a estrutura do cabeçalho 'Authorization' da requisição.
+     *
+     * @param array $dataHeaderAuthorization Dados do cabeçalho 'Authorization'.
+     * @throws Exception Se ocorrer um erro durante a validação.
+     */
     private static function validarHeaderAuthorization(array $dataHeaderAuthorization)
     {
         if (empty($dataHeaderAuthorization[0]) || empty($dataHeaderAuthorization[1])) {
@@ -100,7 +124,14 @@ class UsuarioService
 
     }
 
-
+    /**
+     * Valida os dados fornecidos durante o processo de login.
+     *
+     * @param string $email Endereço de e-mail do usuário.
+     * @param string $senha Senha do usuário.
+     * @param Usuario $usuario Objeto Usuario obtido do banco de dados.
+     * @throws Exception Se ocorrer um erro durante a validação.
+     */
     private function validarDadosLogin($email, $senha, Usuario $usuario)
     {
         if (empty($email)) {
@@ -126,8 +157,10 @@ class UsuarioService
     }
 
     /**
-     * @param $token
-     * @param $expire_in
+     * Retorna o token JWT e o tempo de expiração em formato JSON.
+     *
+     * @param string $token Token JWT gerado.
+     * @param int $expire_in Tempo de expiração do token.
      * @return void
      */
     public function responseTokenAndRefresh($token, $expire_in)
@@ -139,9 +172,11 @@ class UsuarioService
     }
 
     /**
-     * @param Usuario $usuario
-     * @param $expireIn
-     * @return string
+     * Gera o token JWT para o usuário.
+     *
+     * @param Usuario $usuario Objeto Usuario contendo as informações do usuário.
+     * @param int $expireIn Tempo de expiração do token.
+     * @return string Token JWT gerado.
      */
     public function getTokenUser(Usuario $usuario, $expireIn)
     {

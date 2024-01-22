@@ -45,6 +45,11 @@ class ErroMessageResponse
             HttpStatus::INTERNAL_SERVER_ERROR_STATUS, $messages['error_server'], HttpStatus::INTERNAL_SERVER_ERROR_VALUE));
     }
 
+    /**
+     * Resposta para erro de autorização não concedida.
+     *
+     * @param string $chave_mensagem Chave da mensagem de erro.
+     */
     public static function unauthorizedErro($chave_mensagem)
     {
         global $messages;
@@ -52,6 +57,9 @@ class ErroMessageResponse
             HttpStatus::UNAUTHORIZED_STATUS, $messages[$chave_mensagem], HttpStatus::UNAUTHORIZED_VALUE));
     }
 
+    /**
+     * Resposta para erro de acesso proibido.
+     */
     public static function forbiddenErro()
     {
         $status = HttpStatus::FORBIDDEN_STATUS;

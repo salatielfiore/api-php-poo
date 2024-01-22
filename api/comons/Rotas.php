@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Classe responsável por gerenciar as rotas da aplicação.
+ * @author Salatiel Fiore
+ */
 class Rotas
 {
 
@@ -8,6 +12,15 @@ class Rotas
     private $listaProtecao = array();
     private $listaparametros = array();
 
+    /**
+     * Adiciona uma rota à lista de rotas.
+     *
+     * @param string $metodo Método HTTP da rota.
+     * @param string $rota Caminho da rota.
+     * @param string $callback Callback a ser executado quando a rota é acessada.
+     * @param array $parametros Parâmetros esperados pela rota.
+     * @param bool $protecao Indica se a rota requer autenticação.
+     */
     public function add($metodo, $rota, $callback, $parametros, $protecao)
     {
         $this->listaRotas[] = "$metodo:$rota";
@@ -16,7 +29,12 @@ class Rotas
         $this->listaProtecao[] = $protecao;
     }
 
-    public function ir($rota)
+    /**
+     * Navega para a rota especificada.
+     *
+     * @param string $rota Rota a ser acessada.
+     */
+    public function irParaRota($rota)
     {
         $parametros = array();
         $protecao = '';

@@ -65,6 +65,11 @@ class ClienteController
         $clienteService->editarCliente($cliente);
     }
 
+    /**
+     * Exclui um cliente com base no ID fornecido.
+     *
+     * @param array $params Parâmetros da rota, incluindo o ID do cliente.
+     */
     public function excluirCliente($params)
     {
         $id = $params["pathVariable"];

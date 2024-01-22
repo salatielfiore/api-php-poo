@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Classe representando um Usuário.
+ * @author Salatiel Fiore
+ */
 class Usuario
 {
     private $id;

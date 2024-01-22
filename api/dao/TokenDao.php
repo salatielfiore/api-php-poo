@@ -1,6 +1,10 @@
 <?php
 include_once __DIR__ . "/../db/Db.php";
 
+/**
+ * Classe para manipulação de tokens de usuário no banco de dados.
+ * @author Salatiel Fiore
+ */
 class TokenDao
 {
     const SAVE_TOKEN_USER = "INSERT INTO usuario_token (token, generatedAt, ativo, expires_in, id_usuario) 
@@ -9,7 +13,12 @@ class TokenDao
     const SELECT_TOKEN = "select * from usuario_token WHERE token = :token AND ativo = true";
 
     /**
-     * @throws Exception
+     * Salva um novo token de usuário no banco de dados.
+     *
+     * @param int $idUsuario ID do usuário associado ao token.
+     * @param string $token Token a ser salvo.
+     * @param int $expiresIn Tempo de expiração do token.
+     * @throws Exception Se ocorrer um erro durante a operação.
      */
     public function salvarToken($idUsuario, $token, $expiresIn)
     {
@@ -34,7 +43,10 @@ class TokenDao
     }
 
     /**
-     * @throws Exception
+     * Desativa o token associado a um usuário no banco de dados.
+     *
+     * @param int $idUsuario ID do usuário.
+     * @throws Exception Se ocorrer um erro durante a operação.
      */
     public function desativarTokenUsuario($idUsuario)
     {
@@ -53,7 +65,11 @@ class TokenDao
     }
 
     /**
-     * @throws Exception
+     * Busca um token de usuário no banco de dados com base no token fornecido.
+     *
+     * @param string $token Token a ser buscado.
+     * @return Token|null Objeto Token se encontrado, ou null se não encontrado.
+     * @throws Exception Se ocorrer um erro durante a operação.
      */
     public function buscarToken($token)
     {

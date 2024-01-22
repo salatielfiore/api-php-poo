@@ -2,6 +2,7 @@
 
 /**
  * Classe HttpStatus para definir códigos e valores comuns de status HTTP.
+ * @author Salatiel Fiore
  */
 class HttpStatus
 {

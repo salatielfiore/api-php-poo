@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Classe representando um token de usuário.
+ * @author Salatiel Fiore
+ */
 class Token
 {
     private $id;

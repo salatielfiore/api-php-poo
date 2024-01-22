@@ -23,5 +23,5 @@ $rotas->add("POST", "/clientes/salvar", "ClienteController::salvarCliente", null
 $rotas->add("PUT", "/clientes/editar/{param}", "ClienteController::atualizarCliente", null, true);
 $rotas->add("DELETE", "/clientes/excluir/{param}", "ClienteController::excluirCliente", null, true);
 
-$rotas->ir($_GET['path']);
+$rotas->irParaRota($_GET['path']);
 
